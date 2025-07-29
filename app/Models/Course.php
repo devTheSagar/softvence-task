@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Course extends Model
 {
@@ -14,12 +15,10 @@ class Course extends Model
         self::$course->featureVideo = $request->featureVideo;
         self::$course->save();
 
-        // Now we can safely use self::$course->id
-        // $modules = json_decode($request->modules, true);
         $modules = $request->modules;
 
-        foreach ($modules as $mod) {
-            $modRequest = new \Illuminate\Http\Request($mod);
+        foreach ($modules as $module) {
+            $modRequest = new Request($module);
             Module::storeModule($modRequest, self::$course->id);
         }
 

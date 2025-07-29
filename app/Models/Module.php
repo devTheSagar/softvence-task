@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Module extends Model
 {
@@ -14,14 +15,12 @@ class Module extends Model
         self::$module->course_id = $courseId;
         self::$module->save();
 
-        // Make sure contents are passed correctly
         $contents = $request->contents;
+        
         foreach ($contents as $content) {
-            $contentRequest = new \Illuminate\Http\Request($content);
+            $contentRequest = new Request($content);
             Content::storeContent($contentRequest, self::$module->id);
         }
-
-        // return self::$module;
     }
 
     public function course(){
