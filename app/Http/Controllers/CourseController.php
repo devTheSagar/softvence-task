@@ -18,4 +18,11 @@ class CourseController extends Controller
 
         return back();
     }
+
+    public function index(){
+        $courses = Course::with('modules.contents')->get();
+        return view('course.index', [
+            'courses' => $courses
+        ]);
+    }
 }

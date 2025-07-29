@@ -25,8 +25,8 @@
             Course
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Add</a></li>
-            <li><a class="dropdown-item" href="#">All</a></li>
+            <li><a class="dropdown-item" href="{{route('course.add')}}">Add</a></li>
+            <li><a class="dropdown-item" href="{{route('course.all')}}">All</a></li>
           </ul>
         </li>
       </ul>

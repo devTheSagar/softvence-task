@@ -12,3 +12,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [CourseController::class, 'add'])->name('course.add');
 Route::post('/add-course', [CourseController::class, 'store'])->name('course.store');
+Route::get('/all-course', [CourseController::class, 'index'])->name('course.all');

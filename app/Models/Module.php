@@ -27,7 +27,7 @@ class Module extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function content(){
+    public function contents(){
         return $this->hasMany(Content::class);
     }
 }
