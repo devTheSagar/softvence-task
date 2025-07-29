@@ -1,72 +1,118 @@
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const moduleTemplate = document.querySelector('.module-template');
-        const contentTemplate = document.querySelector('.content-template');
-        const moduleContainer = document.getElementById('moduleContainer');
+document.addEventListener('DOMContentLoaded', () => {
+    const moduleContainer = document.getElementById('moduleContainer');
+    let moduleIndex = 0;
 
-        document.getElementById('addModuleBtn').addEventListener('click', () => {
-            const newModule = moduleTemplate.cloneNode(true);
-            newModule.classList.remove('d-none', 'module-template');
-            newModule.classList.add('module');
+    // Add Module Button
+    document.querySelectorAll('#addModuleBtn')[0].addEventListener('click', () => {
+        const moduleRow = createModuleRow(moduleIndex);
+        moduleContainer.appendChild(moduleRow);
+        moduleIndex++;
+    });
 
-            // Content adder
-            newModule.querySelector('.add-content-btn').addEventListener('click', () => {
-            const contentContainer = newModule.querySelector('.contentContainer');
-            const newContent = contentTemplate.cloneNode(true);
-            newContent.classList.remove('d-none', 'content-template');
+    function createModuleRow(i) {
+        const row = document.createElement('div');
+        row.className = 'row mb-3 module';
+        row.dataset.moduleIndex = i;
 
-            newContent.classList.add('content');
+        row.innerHTML = `
+            <div class="col-md-11 mb-3 module-item">
+                <div class="accordion" data-module>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module-${i}">
+                                Module ${i + 1}
+                            </button>
+                        </h2>
+                        <div id="module-${i}" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <input type="hidden" name="modules[${i}][id]" value="">
+                                <div class="mb-3">
+                                    <label class="form-label">Module Title</label>
+                                    <input type="text" name="modules[${i}][moduleTitle]" class="form-control">
+                                </div>
+                                <button type="button" class="btn btn-primary mb-3 add-content-btn">Add Content +</button>
+                                <div class="contentContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 mb-3">
+                <button type="button" class="btn btn-danger remove-module-btn">X</button>
+            </div>
+        `;
 
-            // Set content collapse ID
-            const uniqueId = `content-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-            newContent.querySelector('.accordion-button').setAttribute('data-bs-target', `#${uniqueId}`);
-            newContent.querySelector('.accordion-collapse').setAttribute('id', uniqueId);
-
-            // Delete content button
-            newContent.querySelector('.remove-content-btn').addEventListener('click', () => {
-                newContent.remove();
-                renumberContents(newModule);
-            });
-
-            contentContainer.appendChild(newContent);
-            renumberContents(newModule);
-            });
-
-            // Module delete
-            newModule.querySelector('.remove-module-btn').addEventListener('click', () => {
-            newModule.remove();
-            renumberModules();
-            });
-
-            moduleContainer.appendChild(newModule);
-            renumberModules();
+        // Remove module
+        row.querySelector('.remove-module-btn').addEventListener('click', () => {
+            row.remove();
         });
 
-        function renumberModules() {
-            const modules = moduleContainer.querySelectorAll('.module');
-            modules.forEach((mod, i) => {
-            const headerBtn = mod.querySelector('.accordion-button');
-            const collapse = mod.querySelector('.accordion-collapse');
-            const collapseId = `module-collapse-${i + 1}`;
+        // Add content
+        row.querySelector('.add-content-btn').addEventListener('click', () => {
+            const container = row.querySelector('.contentContainer');
+            const contentIndex = container.querySelectorAll('.content').length;
+            const contentRow = createContentRow(i, contentIndex);
+            container.appendChild(contentRow);
+        });
 
-            headerBtn.innerText = `Module ${i + 1}`;
-            headerBtn.setAttribute('data-bs-target', `#${collapseId}`);
-            collapse.setAttribute('id', collapseId);
+        return row;
+    }
 
-            // Renumber its contents
-            renumberContents(mod);
-            });
-        }
 
-        function renumberContents(moduleElement) {
-            const contents = moduleElement.querySelectorAll('.content');
-            contents.forEach((content, i) => {
-            const btn = content.querySelector('.accordion-button');
-            btn.innerText = `Content ${i + 1}`;
-            });
-        }
-    });
+    function createContentRow(moduleIndex, contentIndex) {
+        const row = document.createElement('div');
+        row.className = 'row mb-3 content';
+
+        row.innerHTML = `
+            <div class="col-md-11">
+                <div class="accordion-item mb-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#content-${moduleIndex}-${contentIndex}">
+                            Content
+                        </button>
+                    </h2>
+                    <div id="content-${moduleIndex}-${contentIndex}" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <div class="mb-3">
+                                <label class="form-label">Content Title</label>
+                                <input type="text" name="modules[${moduleIndex}][contents][${contentIndex}][contentTitle]" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Video Source Type</label>
+                                <select name="modules[${moduleIndex}][contents][${contentIndex}][videoSourceType]" class="form-select">
+                                    <option selected>Choose</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Video URL</label>
+                                <input type="text" name="modules[${moduleIndex}][contents][${contentIndex}][videoUrl]" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Video Length</label>
+                                <input type="time" name="modules[${moduleIndex}][contents][${contentIndex}][videoLength]" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-danger mb-3 remove-content-btn">X</button>
+            </div>
+        `;
+
+        row.querySelector('.remove-content-btn').addEventListener('click', () => {
+            row.remove();
+        });
+
+        return row;
+    }
+});
 </script>
+
 
 
 
