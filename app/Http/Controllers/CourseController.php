@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CourseController extends Controller
 {
@@ -13,6 +14,8 @@ class CourseController extends Controller
 
     public function store(Request $request){
         Course::storeCourse($request);
+        Alert::success('Course Added', 'Course added successfully.');
+
         return back();
     }
 }
