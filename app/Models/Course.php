@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Course extends Model
 {
@@ -26,24 +27,50 @@ class Course extends Model
         
     }
 
-    public static function updateCourse($request, $id){
-        self::$course = Course::find($id);
-        self::$course->courseTitle = $request->courseTitle;
-        self::$course->featureVideo = $request->featureVideo;
-        self::$course->save();
+    public static function updateCourse($request, $id)
+    {
+        DB::transaction(function () use ($request, $id) {
+            $course = Course::findOrFail($id);
+            $course->courseTitle = $request->courseTitle;
+            $course->featureVideo = $request->featureVideo;
+            $course->save();
 
-        $modules = $request->modules ?? [];
-
-        foreach ($modules as $module) {
-            $modRequest = new \Illuminate\Http\Request($module);
-            if (!empty($module['id'])) {
-                Module::updateModule($modRequest, self::$course->id);
-            } else {
-                Module::storeModule($modRequest, self::$course->id);
+            // Delete removed modules and their contents
+            if ($request->filled('deletedModules')) {
+                $deletedModuleIds = explode(',', $request->deletedModules);
+                Content::whereIn('module_id', $deletedModuleIds)->delete();
+                Module::whereIn('id', $deletedModuleIds)->delete();
             }
-        }
 
-        return self::$course;
+            // Delete removed contents only
+            if ($request->filled('deletedContents')) {
+                $deletedContentIds = explode(',', $request->deletedContents);
+                Content::whereIn('id', $deletedContentIds)->delete();
+            }
+
+            foreach ($request->modules ?? [] as $modData) {
+                $module = !empty($modData['id']) 
+                    ? Module::find($modData['id']) 
+                    : new Module();
+
+                $module->moduleTitle = $modData['moduleTitle'];
+                $module->course_id = $course->id;
+                $module->save();
+
+                foreach ($modData['contents'] ?? [] as $contData) {
+                    $content = !empty($contData['id']) 
+                        ? Content::find($contData['id']) 
+                        : new Content();
+
+                    $content->contentTitle = $contData['contentTitle'];
+                    $content->videoSourceType = $contData['videoSourceType'];
+                    $content->videoUrl = $contData['videoUrl'];
+                    $content->videoLength = $contData['videoLength'];
+                    $content->module_id = $module->id;
+                    $content->save();
+                }
+            }
+        });
     }
 
     public static function destroy($id){

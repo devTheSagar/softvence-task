@@ -12,17 +12,36 @@
           <div class="row mt-2">
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label">Course Title</label>
-              <input type="text" name="courseTitle" class="form-control">
+                <label class="form-label">Course Title</label>
+                <input type="text" name="courseTitle" class="form-control @error('courseTitle') is-invalid @enderror">
+                @error('courseTitle')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label">Feature Video</label>
-              <input type="text" name="featureVideo" class="form-control">
+                <label class="form-label">Feature Video</label>
+                <input type="text" name="featureVideo" class="form-control @error('featureVideo') is-invalid @enderror">
+                @error('featureVideo')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
           </div>
         </div>
+
+
+            @if($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                </ul>
+            </div>
+            @endif
+
+
 
         <hr>
         <button type="button" class="btn btn-primary mb-3" id="addModuleBtn">Add Module +</button>
@@ -116,10 +135,10 @@
                                   <div class="mb-3">
                                       <label class="form-label">Video Source Type</label>
                                       <select name="modules[${moduleIndex}][contents][${contentIndex}][videoSourceType]" class="form-select">
-                                          <option selected>Choose</option>
-                                          <option value="1">One</option>
-                                          <option value="2">Two</option>
-                                          <option value="3">Three</option>
+                                          
+                                          <option value="1">YouTube</option>
+                                        <option value="2">Vimeo</option>
+                                        <option value="3">Self Hosted</option>
                                       </select>
                                   </div>
                                   <div class="mb-3">
