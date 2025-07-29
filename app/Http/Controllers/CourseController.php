@@ -100,4 +100,11 @@ class CourseController extends Controller
         Alert::success('Course Deleted', 'Course deleted successfully.');
         return redirect()->route('course.all');
     }
+
+    public function view($id){
+        $course = Course::with('modules.contents')->findOrFail($id);
+        return view('course.view', [
+            'course' => $course
+        ]);
+    }
 }

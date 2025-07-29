@@ -16,3 +16,4 @@ Route::get('/all-course', [CourseController::class, 'index'])->name('course.all'
 Route::get('/edit-course/{id}', [CourseController::class, 'edit'])->name('course.edit');
 Route::post('/update-course/{id}', [CourseController::class, 'update'])->name('course.update');
 Route::delete('/delete-course/{id}', [CourseController::class, 'delete'])->name('course.delete');
+Route::get('/view-course/{id}', [CourseController::class, 'view'])->name('course.view');

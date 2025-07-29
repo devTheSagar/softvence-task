@@ -13,13 +13,19 @@
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">Course Title</label>
-              <input type="text" value="{{$course->courseTitle}}" name="courseTitle" class="form-control">
+              <input type="text" value="{{$course->courseTitle}}" name="courseTitle" class="form-control @error('courseTitle') is-invalid @enderror">
+              @error('courseTitle')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">Feature Video</label>
-              <input type="text" value="{{$course->featureVideo}}" name="featureVideo" class="form-control">
+              <input type="text" value="{{$course->featureVideo}}" name="featureVideo" class="form-control @error('featureVideo') is-invalid @enderror">
+              @error('featureVideo')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
             </div>
           </div>
         </div>
@@ -44,7 +50,10 @@
                                         <input type="hidden" name="modules[{{ $moduleIndex }}][id]" value="{{ $module->id }}">
                                         <div class="mb-3">
                                             <label class="form-label">Module Title</label>
-                                            <input type="text" name="modules[{{ $moduleIndex }}][moduleTitle]" value="{{ $module->moduleTitle }}" class="form-control">
+                                            <input type="text" name="modules[{{ $moduleIndex }}][moduleTitle]" value="{{ $module->moduleTitle }}" class="form-control @error('modules.0.moduleTitle') is-invalid @enderror">
+                                            @error('modules.0.moduleTitle')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <button type="button" class="btn btn-primary mb-3 add-content-btn">Add Content +</button>
                                         <div class="contentContainer">
@@ -62,23 +71,35 @@
                                                                     <input type="hidden" name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][id]" value="{{ $content->id }}">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Content Title</label>
-                                                                        <input type="text" name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][contentTitle]" value="{{ $content->contentTitle }}" class="form-control">
+                                                                        <input type="text" name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][contentTitle]" value="{{ $content->contentTitle }}" class="form-control @error('modules.0.contents.0.contentTitle') is-invalid @enderror">
+                                                                        @error('modules.0.contents.0.contentTitle')
+                                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Video Source Type</label>
-                                                                        <select name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][videoSourceType]" class="form-select">
+                                                                        <select name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][videoSourceType]" class="form-select @error('modules.0.contents.0.videoSourceType') is-invalid @enderror">
                                                                             <option value="1" @selected($content->videoSourceType == 1)>One</option>
                                                                             <option value="2" @selected($content->videoSourceType == 2)>Two</option>
                                                                             <option value="3" @selected($content->videoSourceType == 3)>Three</option>
                                                                         </select>
+                                                                        @error('modules.0.contents.0.videoSourceType')
+                                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Video URL</label>
-                                                                        <input type="text" name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][videoUrl]" value="{{ $content->videoUrl }}" class="form-control">
+                                                                        <input type="text" name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][videoUrl]" value="{{ $content->videoUrl }}" class="form-control @error('modules.0.contents.0.videoUrl') is-invalid @enderror">
+                                                                        @error('modules.0.contents.0.videoUrl')
+                                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Video Length</label>
-                                                                        <input type="time" name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][videoLength]" value="{{ $content->videoLength }}" class="form-control">
+                                                                        <input type="time" name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][videoLength]" value="{{ $content->videoLength }}" class="form-control @error('modules.0.contents.0.videoLength') is-invalid @enderror">
+                                                                        @error('modules.0.contents.0.videoLength')
+                                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                                        @enderror
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -187,7 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <input type="hidden" name="modules[${i}][id]" value="">
                                 <div class="mb-3">
                                     <label class="form-label">Module Title</label>
-                                    <input type="text" name="modules[${i}][moduleTitle]" class="form-control">
+                                    <input type="text" name="modules[${i}][moduleTitle]" class="form-control @error('modules.0.moduleTitle') is-invalid @enderror">
+                                    @error('modules.0.moduleTitle')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <button type="button" class="btn btn-primary mb-3 add-content-btn">Add Content +</button>
                                 <div class="contentContainer"></div>
@@ -229,23 +253,35 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="accordion-body">
                             <div class="mb-3">
                                 <label class="form-label">Content Title</label>
-                                <input type="text" name="modules[${moduleIndex}][contents][${contentIndex}][contentTitle]" class="form-control">
+                                <input type="text" name="modules[${moduleIndex}][contents][${contentIndex}][contentTitle]" class="form-control @error('modules.0.contents.0.contentTitle') is-invalid @enderror">
+                                @error('modules.0.contents.0.contentTitle')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Video Source Type</label>
-                                <select name="modules[${moduleIndex}][contents][${contentIndex}][videoSourceType]" class="form-select">
+                                <select name="modules[${moduleIndex}][contents][${contentIndex}][videoSourceType]" class="form-select @error('modules.0.contents.0.videoSourceType') is-invalid @enderror">
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
                                     <option value="3">Three</option>
                                 </select>
+                                @error('modules.0.contents.0.videoSourceType')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Video URL</label>
-                                <input type="text" name="modules[${moduleIndex}][contents][${contentIndex}][videoUrl]" class="form-control">
+                                <input type="text" name="modules[${moduleIndex}][contents][${contentIndex}][videoUrl]" class="form-control @error('modules.0.contents.0.videoUrl') is-invalid @enderror">
+                                @error('modules.0.contents.0.videoUrl')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Video Length</label>
-                                <input type="time" name="modules[${moduleIndex}][contents][${contentIndex}][videoLength]" class="form-control">
+                                <input type="time" name="modules[${moduleIndex}][contents][${contentIndex}][videoLength]" class="form-control @error('modules.0.contents.0.videoLength') is-invalid @enderror">
+                                @error('modules.0.contents.0.videoLength')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>

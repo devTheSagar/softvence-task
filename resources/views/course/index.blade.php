@@ -42,7 +42,7 @@
 
                                 @if ($moduleIndex === 0)
                                     <td>
-                                    <a href="" type="button" class="btn btn-sm btn-primary">View</a>
+                                    <a href="{{route('course.view', ['id' => $course->id])}}" type="button" class="btn btn-sm btn-primary">View</a>
                                     <a href="{{route('course.edit', ['id' => $course->id])}}" type="button" class="btn btn-sm btn-success">Edit</a>
                                     <form action="{{route('course.delete', ['id' => $course->id])}}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this course?');">
                                         @csrf
