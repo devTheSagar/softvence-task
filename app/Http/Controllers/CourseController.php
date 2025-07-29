@@ -25,4 +25,23 @@ class CourseController extends Controller
             'courses' => $courses
         ]);
     }
+
+    public function edit($id){
+        $course = Course::with('modules.contents')->findOrFail($id);
+        return view('course.edit', [
+            'course' => $course
+        ]);
+    }
+
+    public function update(Request $request, $id){
+        Course::updateCourse($request, $id);
+        Alert::success('Course Updated', 'Course updated successfully.');
+        return redirect()->route('course.all');
+    }
+
+    public function delete($id){
+        Course::destroy($id);
+        Alert::success('Course Deleted', 'Course deleted successfully.');
+        return redirect()->route('course.all');
+    }
 }

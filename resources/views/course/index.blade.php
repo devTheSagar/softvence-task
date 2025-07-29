@@ -39,11 +39,20 @@
                                         <div>{{ $loop->iteration }}. {{ $content->contentTitle }}</div>
                                     @endforeach
                                 </td>
-                                <td>
+
+                                @if ($moduleIndex === 0)
+                                    <td>
                                     <a href="" type="button" class="btn btn-sm btn-primary">View</a>
-                                    <a href="" type="button" class="btn btn-sm btn-success">Edit</a>
-                                    <a href="" type="button" class="btn btn-sm btn-danger">Delete</a>
+                                    <a href="{{route('course.edit', ['id' => $course->id])}}" type="button" class="btn btn-sm btn-success">Edit</a>
+                                    <form action="{{route('course.delete', ['id' => $course->id])}}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this course?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+
                                 </td>
+                                @endif
+                                
                             </tr>
                         @endforeach
                     @endforeach
