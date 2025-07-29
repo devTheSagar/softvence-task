@@ -63,6 +63,33 @@ class CourseController extends Controller
     }
 
     public function update(Request $request, $id){
+        $request->validate([
+            'courseTitle'       => 'required|string',
+            'featureVideo'      => 'required|url',
+
+            'modules'                   => 'required|array',
+            'modules.*.moduleTitle'     => 'required|string',
+
+            'modules.*.contents'                    => 'required|array',
+            'modules.*.contents.*.contentTitle'     => 'required|string',
+            'modules.*.contents.*.videoSourceType'  => 'required|string',
+            'modules.*.contents.*.videoUrl'         => 'required|url',
+            'modules.*.contents.*.videoLength'      => 'required',
+        ], [
+            'courseTitle.required'          => 'Please give a course title',
+            'featureVideo.required'         => 'Please give a url',
+            'featureVideo.url'              => 'Please give a valid feature video url',
+
+            'modules.required'                          => 'Please add a module',
+            'modules.*.moduleTitle.required'            => 'Please give a module title',
+
+            'modules.*.contents.required'                       => 'Please add a module content',
+            'modules.*.contents.*.contentTitle.required'        => 'Please give a module content title',
+            'modules.*.contents.*.videoSourceType.required'     => 'Please select a video source type',
+            'modules.*.contents.*.videoUrl.required'            => 'Please give a video url',
+            'modules.*.contents.*.videoUrl.url'                 => 'Please give a valid url',
+            'modules.*.contents.*.videoLength.required'         => 'Please select the video length',
+        ]);
         Course::updateCourse($request, $id);
         Alert::success('Course Updated', 'Course updated successfully.');
         return redirect()->route('course.all');
