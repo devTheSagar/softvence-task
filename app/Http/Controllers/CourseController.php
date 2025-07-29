@@ -49,7 +49,7 @@ class CourseController extends Controller
     }
 
     public function index(){
-        $courses = Course::with('modules.contents')->get();
+        $courses = Course::with('modules.contents')->orderBy('created_at', 'desc')->get();
         return view('course.index', [
             'courses' => $courses
         ]);

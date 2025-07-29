@@ -79,9 +79,9 @@
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Video Source Type</label>
                                                                         <select name="modules[{{ $moduleIndex }}][contents][{{ $contentIndex }}][videoSourceType]" class="form-select @error('modules.0.contents.0.videoSourceType') is-invalid @enderror">
-                                                                            <option value="1" @selected($content->videoSourceType == 1)>One</option>
-                                                                            <option value="2" @selected($content->videoSourceType == 2)>Two</option>
-                                                                            <option value="3" @selected($content->videoSourceType == 3)>Three</option>
+                                                                            <option value="1" @selected($content->videoSourceType == 1)>YouTube</option>
+                                                                            <option value="2" @selected($content->videoSourceType == 2)>Vimeo</option>
+                                                                            <option value="3" @selected($content->videoSourceType == 3)>Self Hosted</option>
                                                                         </select>
                                                                         @error('modules.0.contents.0.videoSourceType')
                                                                             <div class="invalid-feedback">{{ $message }}</div>
